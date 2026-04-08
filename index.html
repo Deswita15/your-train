@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YourTrain - Reservasi Tiket Kereta</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(180deg, #E3F2FD 0%, #FFFFFF 50%, #E8EAF6 100%);
+            --white: #FFFFFF;
+            --blue-main: #0D47A1;
+            --blue-accent: #64B5F6;
+            --text-dark: #1A237E;
+            --text-light: #5C6BC0;
+            --shadow-card: 0 15px 35px rgba(13, 71, 161, 0.2);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* NAVBAR */
+        nav {
+            background: rgba(255,255,255,0.95);
+            padding: 15px 5%;
+            position: sticky;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+        }
+        .logo { font-size: 1.8rem; font-weight: 800; color: var(--blue-main); }
+        .nav-links a {
+            margin-left: 30px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        /* HERO */
+        .hero {
+            padding: 100px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--blue-main);
+        }
+
+        .hero-text p {
+            margin-top: 10px;
+            font-size: 1.2rem;
+            color: var(--text-light);
+        }
+
+        .btn-blob {
+            background: var(--blue-main);
+            padding: 15px 40px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* HALAMAN 2 (LOGIN / JADWAL / DLL) */
+        section.page {
+            min-height: 100vh;
+            padding: 40px;
+            background: linear-gradient(135deg, #001f3f, #003f7f, #005bb5);
+            color: white;
+        }
+
+        .card-custom {
+            width: 500px;
+            background: rgba(255,255,255,0.12);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
+            margin: auto;
+        }
+        .btn-primary, .btn-back, .btn-success {
+            padding: 12px;
+            border-radius: 10px;
+            color: white;
+            background: linear-gradient(45deg, #0077cc, #00aaff);
+            border: none;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .hero { flex-direction: column; text-align: center; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+    <div class="logo">YourTrain</div>
+    <div class="nav-links">
+    </div>
+</nav>
+
+<!-- ============================= -->
+<!--        HALAMAN 1 (HOME)      -->
+<!-- ============================= -->
+<section id="homePage">
+    <div class="hero">
+        <div class="hero-text">
+            <h1>Reservasi Tiket Kereta</h1>
+            <p>Pesan tiket kereta lebih mudah dan cepat.</p>
+            <div class="btn-blob" onclick="goToLogin()">Pesan Sekarang</div>
+        </div>
+    </div>
+
+    <!-- WHY US -->
+    <div class="why-grid" style="margin: 80px 5%; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:30px;">
+        <div class="why-card">
+            <h3>SUPER SALE TIKET KERETA!</h3>
+            <p>Hemat hingga 25% untuk semua kelas.</p>
+        </div>
+        <div class="why-card">
+            <h3>Promo Hingga 30%</h3>
+            <p>Nikmati perjalanan cepat dan aman.</p>
+        </div>
+        <div class="why-card">
+            <h3>Tiket mulai Rp 49.000</h3>
+            <p>Jelajahi kota favoritmu tanpa mahal!</p>
+        </div>
+    </div>
+</section>
+
+<!-- ============================= -->
+<!--     HALAMAN 2 (LOGIN)        -->
+<!-- ============================= -->
+<section id="loginPage" class="page d-none">
+    <div class="card-custom text-center">
+        <h1 class="mb-4">Login Reservasi</h1>
+        <form id="loginForm">
+            <div class="mb-3 text-start">
+                <label>Username</label>
+                <input type="text" id="username" class="form-control" placeholder="username" required>
+            </div>
+            <div class="mb-3 text-start">
+                <label>Password</label>
+                <input type="password" id="password" class="form-control" placeholder="********" required>
+            </div>
+            <button type="submit" class="btn-primary w-100">Login</button>
+            <button type="button" class="btn-back w-100 mt-3" onclick="backHome()">Kembali</button>
+        </form>
+    </div>
+</section>
+
+<!-- ============================= -->
+<!--        HALAMAN JADWAL        -->
+<!-- ============================= -->
+<section id="jadwal" class="page d-none">
+    <div class="card-custom">
+        <h2 class="text-center mb-4">Jadwal Tiket Tersedia</h2>
+        <table class="table table-bordered text-white">
+            <thead>
+                <tr>
+                    <th>Rute</th>
+                    <th>Tanggal</th>
+                    <th>Waktu</th>
+                    <th>Harga</th>
+                    <th>Kursi</th>
+                    <th>Pilih</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Jakarta - Surabaya</td>
+                    <td>15-12-2025</td>
+                    <td>08:00</td>
+                    <td>Rp 150.000</td>
+                    <td>10</td>
+                    <td><button class="btn-primary btn-sm" onclick="pilihJadwal('Jakarta - Surabaya','15-12-2025','08:00',150000)">Pilih</button></td>
+                </tr>
+                <tr>
+                    <td>Bandung - Yogyakarta</td>
+                    <td>15-12-2025</td>
+                    <td>14:00</td>
+                    <td>Rp 200.000</td>
+                    <td>5</td>
+                    <td><button class="btn-primary btn-sm" onclick="pilihJadwal('Bandung - Yogyakarta','15-12-2025','14:00',200000)">Pilih</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="btn-back w-100" onclick="logout()">Logout</button>
+    </div>
+</section>
+
+<!-- HALAMAN RESERVASI -->
+<section id="reservasi" class="page d-none">
+    <div class="card-custom">
+        <h2 class="text-center">Reservasi Pribadi</h2>
+        <p>Jadwal Dipilih: <span id="jadwalDipilih"></span></p>
+
+        <form id="reservasiForm">
+            <div class="mb-3">
+                <label>Nama Lengkap</label>
+                <input type="text" id="nama" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Email</label>
+                <input type="email" id="email" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>No Telepon</label>
+                <input type="tel" id="telepon" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Jumlah Tiket</label>
+                <input type="number" id="jumlahTiket" class="form-control" min="1" required>
+            </div>
+
+            <button type="submit" class="btn-primary w-100">Lanjut Pembayaran</button>
+            <button type="button" class="btn-back w-100 mt-3" onclick="backToJadwal()">Kembali</button>
+        </form>
+    </div>
+</section>
+
+<!-- PEMBAYARAN -->
+<section id="pembayaran" class="page d-none">
+    <div class="card-custom">
+        <h2 class="text-center">Pembayaran</h2>
+        <p>Total: <span id="totalHarga"></span></p>
+
+        <form id="pembayaranForm">
+            <div class="mb-3">
+                <label>Nomor Kartu Kredit</label>
+                <input type="text" id="cardNumber" class="form-control" pattern="\d{16}" required>
+            </div>
+            <div class="mb-3">
+                <label>CVV</label>
+                <input type="text" id="cvv" class="form-control" pattern="\d{3}" required>
+            </div>
+
+            <button class="btn-success w-100 mt-2" type="submit">Bayar Sekarang</button>
+            <button class="btn-back w-100 mt-3" type="button" onclick="backToReservasi()">Kembali</button>
+        </form>
+    </div>
+</section>
+
+
+<script>
+/* NAVIGASI */
+function goToLogin() {
+    document.getElementById("homePage").classList.add("d-none");
+    document.getElementById("loginPage").classList.remove("d-none");
+}
+
+function backHome() {
+    document.getElementById("loginPage").classList.add("d-none");
+    document.getElementById("homePage").classList.remove("d-none");
+}
+
+/* LOGIN */
+document.getElementById("loginForm").onsubmit = function(e) {
+    e.preventDefault();
+    let u = username.value;
+    let p = password.value;
+
+    if (u === "user" && p === "pass") {
+        loginPage.classList.add("d-none");
+        jadwal.classList.remove("d-none");
+    } else {
+        alert("Username atau password salah!");
+    }
+};
+
+/* PILIH JADWAL */
+let jadwalTerpilih = {};
+
+function pilihJadwal(r, tgl, wkt, hrg) {
+    jadwalTerpilih = { r, tgl, wkt, hrg };
+    jadwal.classList.add("d-none");
+    reservasi.classList.remove("d-none");
+    jadwalDipilih.innerText = `${r} - ${tgl} ${wkt}`;
+}
+
+function backToJadwal() {
+    reservasi.classList.add("d-none");
+    jadwal.classList.remove("d-none");
+}
+
+/* FORM RESERVASI */
+document.getElementById("reservasiForm").onsubmit = function(e) {
+    e.preventDefault();
+    let jumlah = Number(jumlahTiket.value);
+    let total = jadwalTerpilih.hrg * jumlah;
+    totalHarga.innerText = "Rp " + total.toLocaleString();
+
+    reservasi.classList.add("d-none");
+    pembayaran.classList.remove("d-none");
+};
+
+/* PEMBAYARAN */
+document.getElementById("pembayaranForm").onsubmit = function(e) {
+    e.preventDefault();
+    alert("Pembayaran berhasil! Tiket telah dipesan.");
+    location.reload();
+};
+
+function backToReservasi() {
+    pembayaran.classList.add("d-none");
+    reservasi.classList.remove("d-none");
+}
+
+/* LOGOUT */
+function logout() {
+    jadwal.classList.add("d-none");
+    homePage.classList.remove("d-none");
+}
+</script>
+
+</body>
+</html>
